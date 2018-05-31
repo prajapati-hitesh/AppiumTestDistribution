@@ -25,7 +25,7 @@ matrix:
         - nvm install 6
         - node --version
         - npm --version
-        - npm install -g appium
+        - npm install -g appium@beta
         - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
         - emulator -avd test -no-audio -no-window &
         - android-wait-for-emulator
