@@ -7,7 +7,6 @@ import com.appium.utils.FileFilterParser;
 import com.appium.utils.Helpers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.util.JSON;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.ITestResult;
@@ -54,7 +53,6 @@ public class TestStatusManager extends Helpers {
                 .writeValueAsString(appiumDevice);
         JSONArray device = new JSONArray();
         device.put(deviceDetails);
-        test.put("deviceinfo", JSON.parse(deviceDetails.replace("/\r?\n|\r/g", "")));
         return test.toString();
     }
 

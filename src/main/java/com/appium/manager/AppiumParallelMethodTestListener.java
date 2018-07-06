@@ -4,15 +4,10 @@ import com.annotation.values.Description;
 import com.annotation.values.SkipIf;
 import com.appium.utils.CapabilityManager;
 import com.appium.utils.Helpers;
-import com.appium.utils.Retry;
-import com.aventstack.extentreports.Status;
-import com.report.factory.ExtentManager;
-import com.report.factory.ExtentTestManager;
 
 
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
-import org.testng.IRetryAnalyzer;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ITestContext;
@@ -86,7 +81,6 @@ public final class AppiumParallelMethodTestListener extends Helpers
                     if (getClass().getAnnotation(Description.class) != null) {
                         testDescription = getClass().getAnnotation(Description.class).value();
                     }
-                    reportManager.createParentNodeExtent(className, testDescription);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -102,7 +96,6 @@ public final class AppiumParallelMethodTestListener extends Helpers
                 sendResultsToAtdService(testResult,
                         "Completed", url,logs);
             }
-            ExtentManager.getExtent().flush();
             deviceAllocationManager.freeDevice();
             try {
                 appiumDriverManager.stopAppiumDriver();
@@ -149,13 +142,6 @@ public final class AppiumParallelMethodTestListener extends Helpers
      */
     @Override
     public void onTestSkipped(ITestResult result) {
-        ExtentTestManager.extent.removeTest(ExtentTestManager.getTest());
-        IRetryAnalyzer retryAnalyzer = result.getMethod().getRetryAnalyzer();
-        if (((Retry) retryAnalyzer).retryCountForTest == ((Retry) retryAnalyzer).maxRetryCount) {
-            (reportManager.parentTest.get()).getModel().setStatus(Status.SKIP);
-            (reportManager.childTest.get()).getModel().setStatus(Status.SKIP);
-            ExtentManager.getExtent().flush();
-        }
     }
 
     @Override
